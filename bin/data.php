@@ -2,7 +2,7 @@
 header("Content-Type: text/plain");
 
 $user = "dayz";
-$password = "ultimatesupersecret126";
+$password = "yourpassword";
 $database = "dayz_lingor";
 $host = "127.0.0.1:3306";
 
