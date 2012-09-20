@@ -1,10 +1,7 @@
 <?php
 header("Content-Type: text/plain");
 
-$user = "dayz";
-$password = "ultimatesupersecret126";
-$database = "dayz_lingor";
-$host = "127.0.0.1:3306";
+include("config.php");
 
 mysql_connect($host, $user, $password) or die ("Unable to connect");
 @mysql_select_db($database) or die ("Unable to select DB");

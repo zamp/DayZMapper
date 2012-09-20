@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\dayzmapper_chernarus.swf" />
+    <movie path="bin\dayzmapper.swf" />
     <movie fps="30" />
     <movie width="1280" />
     <movie height="720" />
@@ -51,6 +51,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib\DConsole2.3.swc" />
+    <element path="lib\greensock.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

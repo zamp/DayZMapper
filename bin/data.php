@@ -4,11 +4,7 @@ header("Content-Type: text/plain");
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-$user = "dayz";
-$password = "yourpassword";
-$database = "dayz_lingor";
-$host = "127.0.0.1:3306";
-$instance = 1;
+include("config.php");
 
 ?><stuff>
 <?php

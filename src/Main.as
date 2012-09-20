@@ -3,6 +3,7 @@ package
 	import com.furusystems.dconsole2.DConsole;
 	import com.furusystems.logging.slf4as.Logging;
 	import flash.display.Bitmap;
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -26,17 +27,17 @@ package
 	 */
 	public class Main extends Sprite 
 	{
-		// TODO: when you click on someone you follow them automatically.
-		
-		static public const IMAGE_WIDTH:Number = 2000;
-		static public const IMAGE_HEIGHT:Number = 2000;
-		static public const LINGOR:Boolean = false;
-		
-		[Embed(source="map.jpg")]
-		private var _mapSource:Class;
+		// TODO: when you click on someone you follow them automatically.		
+		public static var IMAGE_WIDTH:Number = 0;
+		public static var IMAGE_HEIGHT:Number = 0;
+		public static var OFFSET_X:Number = 0;
+		public static var OFFSET_Y:Number = 0;
+		public static var SCALE_X:Number = 0;
+		public static var SCALE_Y:Number = 0;
 		
 		private var _map:Sprite;
 		private var _xmlUrl:String = "data.php";
+		private var _mapUrl:String = "map.txt";
 		private var _players:Vector.<PlayerIcon> = new Vector.<PlayerIcon>;
 		private var _timer:Timer = new Timer(10000);
 		private var _objects:Vector.<ObjectIcon> = new Vector.<ObjectIcon>;
@@ -60,17 +61,8 @@ package
 			// entry point
 			
 			_map = new Sprite();
-			_map.addChild(new _mapSource());
-			
-			var derp:SharedObject = SharedObject.getLocal("mapPos");
-			if (derp.data.mapX != null)
-				_map.x = derp.data.mapX;
-			if (derp.data.mapY != null)
-				_map.y = derp.data.mapY;
-			
 			_map.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 			_map.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
-			
 			addChild(_map);
 			
 			// pull data from server
@@ -83,12 +75,51 @@ package
 			_loadingTF.textColor = 0xFFFFFF;
 			_loadingTF.x = 5;
 			_loadingTF.y = 2;
-			_loadingTF.width = 100;
+			_loadingTF.width = 1000;
 			_loadingTF.height = 1000;
 			_loadingTF.selectable = false;
 			_loadingTF.multiline = true;
 			_loadingTF.htmlText = "";
 			addChild(_loadingTF);
+			_loadingTF.mouseEnabled = false;
+			
+			// get file with map
+			var loader:URLLoader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.addEventListener(Event.COMPLETE, mapConfigLoaded);
+			loader.addEventListener(IOErrorEvent.IO_ERROR , xmlFail);
+			loader.load(new URLRequest(_mapUrl));
+			_loadingTF.text = "Loading map.txt";
+		}
+		
+		private function mapConfigLoaded(e:Event):void 
+		{
+			// read out map data
+			var lines:Array = e.target.data.split(/\n/);
+			
+			IMAGE_WIDTH = lines[1];
+			IMAGE_HEIGHT = lines[2];
+			OFFSET_X = lines[3];
+			OFFSET_Y = lines[4];
+			SCALE_X = lines[5];			
+			SCALE_Y = lines[6];
+			
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, mapLoaded);
+			loader.load(new URLRequest(lines[0]));
+			_loadingTF.text = "Loading map graphic \""+lines[0]+"\"...";
+		}
+		
+		private function mapLoaded(e:Event):void 
+		{
+			var derp:SharedObject = SharedObject.getLocal("mapPos");
+			if (derp.data.mapX != null)
+				_map.x = derp.data.mapX;
+			if (derp.data.mapY != null)
+				_map.y = derp.data.mapY;
+				
+			_loadingTF.text = "Load complete.";
+			_map.addChild(e.target.content as Bitmap);
 			
 			_timer.addEventListener(TimerEvent.TIMER, loadDataXml);
 			_timer.start();
@@ -195,27 +226,13 @@ package
 		
 		public static function convertCoords(x:Number, y:Number):Point
 		{
-			if (LINGOR)
-			{
-				//x += 700;
-				y -= 5365;
+			x += OFFSET_X;
+			y += OFFSET_Y;
+			
+			x = x / SCALE_X * Main.IMAGE_WIDTH;
+			y = y / SCALE_Y * Main.IMAGE_HEIGHT;
 				
-				x = x / 10000 * Main.IMAGE_WIDTH;
-				y = y / 10000 * Main.IMAGE_HEIGHT;
-				
-				return new Point(Math.floor(x), Math.floor(y));
-			}
-			else 
-			{
-				x -= 700;
-				y -= 370;
-				
-				x = x / 14300 * Main.IMAGE_WIDTH;
-				y = y / 13850 * Main.IMAGE_HEIGHT;
-				
-				return new Point(Math.floor(x), Math.floor(y));
-			} 
-			return new Point();
+			return new Point(Math.floor(x), Math.floor(y));
 		}
 		
 	}

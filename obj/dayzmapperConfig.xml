@@ -27,6 +27,7 @@
     </source-path>
     <library-path append="true">
       <path-element>F:\Dropbox\Projects\flash\dayzmapper\lib\DConsole2.3.swc</path-element>
+      <path-element>F:\Dropbox\Projects\flash\dayzmapper\lib\greensock.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

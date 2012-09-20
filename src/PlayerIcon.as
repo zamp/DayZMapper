@@ -3,6 +3,7 @@ package
 	import com.adobe.serialization.json.JSON;
 	import com.adobe.serialization.json.JSONDecoder;
 	import com.furusystems.logging.slf4as.Logging;
+	import com.greensock.TweenLite;
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
@@ -42,6 +43,8 @@ package
 		[Embed(source="pf_tempesta_seven.ttf", fontName="pf_tempesta", mimeType = "application/x-font", embedAsCFF = "false")]
 		static public var font_pftempesta:Class;
 		
+		private var _line:Sprite = new Sprite();
+		
 		public function PlayerIcon(data:XML) 
 		{
 			_id = data.id;
@@ -58,6 +61,9 @@ package
 			_oldpositions.unshift(coords.clone());
 			
 			buildTooltip(data, coords);
+			
+			addChild(_line);
+			_line.alpha = 0.5;
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			addEventListener(MouseEvent.ROLL_OUT, mouseOut);
@@ -120,11 +126,13 @@ package
 		private function mouseOut(e:MouseEvent):void 
 		{
 			_tooltip.alpha = 0;
+			TweenLite.to(_line, 1, { alpha:0.5 } );
 		}
 		
 		private function mouseOver(e:MouseEvent):void 
 		{
 			_tooltip.alpha = 1;
+			TweenLite.to(_line, 0.3, { alpha:1 } );
 		}
 		
 		private function countHumanity(h:Number):uint
@@ -139,13 +147,14 @@ package
 		private function updateGraphic(x:Number, y:Number, color:uint):void 
 		{
 			graphics.clear();
+			_line.graphics.clear();
 			// draw shit
 			if (_oldpositions.length > 1)
 			{
-				graphics.lineStyle(2, color, 0.6, true, "normal", CapsStyle.ROUND, JointStyle.BEVEL);
-				graphics.moveTo(x, y);
+				_line.graphics.lineStyle(2, color, 0.6, true);
+				_line.graphics.moveTo(x, y);
 				for each (var p:Point in _oldpositions)
-					graphics.lineTo(p.x, p.y);
+					_line.graphics.lineTo(p.x, p.y);
 			}
 			
 			graphics.lineStyle(1, 0x000000, 1);
@@ -162,15 +171,12 @@ package
 			updateAlpha(data.age);
 			buildTooltip(data, coords);
 			
-			_oldpositions.unshift(coords.clone());
+			if (coords.length > 1)
+				_oldpositions.unshift(coords.clone());
 		}
 		
 		private function updateAlpha(age:Number):void 
 		{
-			//var a:Number = (_maxAge + age) / _maxAge;
-			//a = a < 0 ? 0 : a;
-			//alpha = a;
-			//alpha = 1;
 		}
 		
 		public function get id():int 
