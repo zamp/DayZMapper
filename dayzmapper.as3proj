@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\dayzmapper.swf" />
+    <movie path="bin\dayzmapper_chernarus.swf" />
     <movie fps="30" />
     <movie width="1280" />
     <movie height="720" />

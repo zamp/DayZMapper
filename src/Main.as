@@ -30,9 +30,9 @@ package
 		
 		static public const IMAGE_WIDTH:Number = 2000;
 		static public const IMAGE_HEIGHT:Number = 2000;
-		static public const LINGOR:Boolean = true;
+		static public const LINGOR:Boolean = false;
 		
-		[Embed(source="map_lingor.jpg")]
+		[Embed(source="map.jpg")]
 		private var _mapSource:Class;
 		
 		private var _map:Sprite;

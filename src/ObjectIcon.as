@@ -60,7 +60,7 @@ package
 			var tf:TextField = new TextField();
 			tf.embedFonts = true;
 			tf.defaultTextFormat = new TextFormat("pf_tempesta", 8, 0xffffff);			
-			tf.filters = [new DropShadowFilter(0, 0, 0x000000, 1, 2, 2, 5)];
+			//tf.filters = [new DropShadowFilter(0, 0, 0x000000, 1, 2, 2, 5)];
 			tf.textColor = 0xFFFFFF;
 			tf.x = 2;
 			tf.y = 0;
