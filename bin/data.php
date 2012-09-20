@@ -5,6 +5,7 @@ $user = "dayz";
 $password = "yourpassword";
 $database = "dayz_lingor";
 $host = "127.0.0.1:3306";
+$instance = 1;
 
 ?><stuff>
 <?php
@@ -52,7 +53,7 @@ if ($result)
 	}
 }
 
-$result = mysql_query("SELECT * FROM objects");
+$result = mysql_query("SELECT * FROM objects WHERE instance='$instance'");
 if ($result)
 {
 	while ($row = mysql_fetch_array($result))
