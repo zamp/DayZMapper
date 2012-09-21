@@ -1,14 +1,11 @@
 <b>How to install:</b>
 
 <pre>
-1. Copy bin/* to your webhost (Can be the server that DayZ is running on but you will need either apache or some other http server that can handle php)
-
+1. Copy bin/* to your webhost (Can be the server that DayZ is running on but you
+will need either apache or some other http server that can handle php)
 2. Rename example_config.php to config.php
-
 3. Change config.php to have your username/password/hostname etc.
-
 4. Rename either map_chernarus_example.txt or map_chernarus_lingor.txt to map.txt
-
 5. Point your browser to wherever you copied stuff to.
 </pre>
 
