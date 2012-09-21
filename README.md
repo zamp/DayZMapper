@@ -15,6 +15,15 @@ Create .htaccess file to password protect the website.
 
 If you want to use your own map graphic you need to specify certain values in the map.txt
 
-First line map.txt is the file that is loaded. The second is how wide the image is. 3rd is how tall the image is. 4th is X offset. 5th is Y offset. 6th is the map X scale. 7th is the map Y scale.
+Here is an example map.txt with comments (Do not add comments in the map.txt otherwise it will not work!)
+<pre>
+map_chernarus.jpg // the map file that is loaded.
+1234 // how wide the image is
+4321 // how tall the image is
+100 // X offset of the image. 0 coordinate is 100 meters away from the left edge
+30 // Y offset of the image. 0 coordinate is 30 meters away from the bottom edge
+1000 // map X scale. how many meters are on the map X axis
+1000 // map Y scale. how many meters are on the map Y axis
+</pre>
 
 If you have any questions ask zamp @ freenode/ircnet/quakenet/whatever just whois me.
