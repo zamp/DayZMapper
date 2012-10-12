@@ -29,7 +29,7 @@ map_chernarus.jpg // the map file that is loaded.
 
 <b>Cheat (teleportation) prevention the awesome way:</b>
 <pre>
-Add this database to your dayz database:
+Add this table to your dayz database:
 
 CREATE TABLE IF NOT EXISTS `survivor_last_pos` (
   `id` int(8) unsigned NOT NULL,
