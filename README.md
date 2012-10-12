@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `survivor_last_pos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 Copy dayzmapper/cheatchecker.php to the install location and run this in cron (every minute) to alert you of any hackers.
-It will print out people who have moved more than 5(?) kilometers in a minute. Usually this lets you see cheaters fairly quickly and you don't have to have the mapper open all of the time.
+It will print out people who have moved more than 2 kilometers in a minute. Usually this lets you see cheaters fairly quickly and you don't have to have the mapper open all of the time. Sometimes you get faulty readings if people use a vehicle, will fix later.
 You can append the output in cron with "php cheatchecker.php >> file"
 Then you can tail that file and play an alert sound of your choice whenever a new line is added to the file
 "tail -f cheatchecker.php | while read line ; do aplay -q alert.wav 2>&1 1>/dev/null ; echo $line ; done"
