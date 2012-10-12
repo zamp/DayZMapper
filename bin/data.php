@@ -76,7 +76,7 @@ if ($result)
 		<otype><![CDATA[<?=$row["otype"]?>]]></otype>
 		<x><?=$x?></x>
 		<y><?=$y?></y>
-		<age><?=strtotime($row["last_update"]) - strtotime("now")?></age>
+		<age><?=strtotime($row["lastupdate"]) - strtotime("now")?></age>
 		<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
 	</object>
 <?php
