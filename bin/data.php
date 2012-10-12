@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 header("Content-Type: text/plain");
 // added to maybe fix cache blowing up to insane size
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -17,7 +19,7 @@ if ($result)
 {
 	while ($row = mysql_fetch_array($result))
 	{
-		$pos = $row[pos];
+		$pos = $row["pos"];
 		$pos = str_replace(array("[","]"), "", $pos);
 		$posArray = explode(",", $pos);
 
@@ -27,13 +29,15 @@ if ($result)
 		$y = $y - 15365;
 		$y *= -1;
 		
-		$id = $row[unique_id];
-		$result2 = mysql_query("SELECT name FROM profile WHERE unique_id=$id");
+		$id = $row["unique_id"];
+		$result2 = mysql_query("SELECT name,humanity FROM profile WHERE unique_id=$id");
 		$name = "Unnamed";
+		$humanity = 0;
 		if ($result2)
 		{
 			$row2 = mysql_fetch_array($result2);
-			$name = $row2[name];
+			$name = $row2["name"];
+			$humanity = $row2["humanity"];
 		}
 		
 ?>	<player>
@@ -41,12 +45,12 @@ if ($result)
 		<name><![CDATA[<?=$name?>]]></name>
 		<x><?=$x?></x>
 		<y><?=$y?></y>
-		<age><?=strtotime($row[lastupdate]) - strtotime("now")?></age>
-		<humanity><?=$row[humanity]?></humanity>
-		<inventory><![CDATA[<?=$row[inventory]?>]]></inventory>
-		<model><![CDATA[<?=$row[model]?>]]></model>
-		<hkills><?=$row[survivor_kills]?></hkills>
-		<bkills><?=$row[bandit_kills]?></bkills>
+		<age><?=strtotime($row["last_update"]) - strtotime("now")?></age>
+		<humanity><?=$humanity?></humanity>
+		<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+		<model><![CDATA[<?=$row["model"]?>]]></model>
+		<hkills><?=$row["survivor_kills"]?></hkills>
+		<bkills><?=$row["bandit_kills"]?></bkills>
 	</player>
 <?php
 	}
@@ -69,11 +73,11 @@ if ($result)
 		
 ?>	<object>
 		<id><?=$row[id]?></id>
-		<otype><![CDATA[<?=$row[otype]?>]]></otype>
+		<otype><![CDATA[<?=$row["otype"]?>]]></otype>
 		<x><?=$x?></x>
 		<y><?=$y?></y>
-		<age><?=strtotime($row[lastupdate]) - strtotime("now")?></age>
-		<inventory><![CDATA[<?=$row[inventory]?>]]></inventory>
+		<age><?=strtotime($row["last_update"]) - strtotime("now")?></age>
+		<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
 	</object>
 <?php
 	}

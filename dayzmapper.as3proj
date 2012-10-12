@@ -52,6 +52,7 @@
   <libraryPaths>
     <element path="lib\DConsole2.3.swc" />
     <element path="lib\greensock.swc" />
+    <element path="lib\LiquifyComps-1-14-77852fa59c4e.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

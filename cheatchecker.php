@@ -24,30 +24,30 @@ if ($result)
 {
 	while ($row = mysql_fetch_array($result))
 	{
-		$position = $row[pos];
+		$position = $row["pos"];
 		$pos = str_replace(array("[","]"), "", $position);
 		$posArray = explode(",", $pos);
 
 		$x = $posArray[1];
 		$y = $posArray[2];
 		
-		$id = $row[unique_id];
+		$id = $row["unique_id"];
 		$result2 = mysql_query("SELECT name FROM profile WHERE unique_id=$id");
 		$name = "Unnamed";
 		if ($result2)
 		{
 			$row2 = mysql_fetch_array($result2);
-			$name = $row2[name];
+			$name = $row2["name"];
 		}
 		
-		$id = $row[id];
+		$id = $row["id"];
 		$result2 = mysql_query("SELECT pos FROM survivor_last_pos WHERE id='$id'");
 		if ($result2)
 		{
 			$row2 = mysql_fetch_array($result2);
 			if ($row2)
 			{
-				$pos = $row2[pos];
+				$pos = $row2["pos"];
 				$pos = str_replace(array("[","]"), "", $pos);
 				$posArray = explode(",", $pos);
 				
@@ -59,14 +59,14 @@ if ($result)
 				$y3 = ($y - $y2) * ($y - $y2);
 				$distance = sqrt($x3 + $y3);
 				
-				if ($distance > 300) // moved more than 300...ish meters in 10 seconds
-					echo "$name distance moved: $distance\nfrom $x,$y to $x2,$y2\n";
+				if ($distance > 2000 && $x2 != 0 && $y2 != 0) // moved more than 2 kliks in a minute. impossible unless in chopper, usually cheater
+					echo "$name distance moved: $distance from $x2,$y2 to $x,$y\n";
 				
 				// update pos
 				mysql_query("UPDATE survivor_last_pos SET pos='$position' WHERE id='$id' LIMIT 1");
 			} else {
 				//echo "$name has no last pos\n";
-				$pos = $row[pos];
+				$pos = $row["pos"];
 				// no position in database, create new
 				mysql_query("INSERT INTO survivor_last_pos VALUES ('$id','$position')");
 			}
