@@ -10,7 +10,14 @@ Thanks to ihatetn931 for takistan map
 5. Point your browser to wherever you copied stuff to.
 </pre>
 
-<b>Optional:</b>
+<b>TODO:</b>
+<pre>
+- Icons in the upper left corner to toggle player/vehicle/tent visibility
+- Update to latest schema
+- Toggle spawn location line pos thing...
+</pre>
+
+<b>Optional Stuff:</b>
 
 Create .htaccess file to password protect the website.
 
