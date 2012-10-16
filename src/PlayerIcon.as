@@ -96,7 +96,8 @@ package
 			else
 				tf.htmlText += "Humanity: <font color=\"#40ff40\">" + data.humanity + "</font>\n";
 			
-			tf.htmlText += "Kills: " + data.hkills + "/" + data.bkills + "\n";			
+			tf.htmlText += "Bandit kills: " + data.bkills + "\n";
+			tf.htmlText += "Survivor kills: " + data.hkills + "\n";
 			var inv:Array = JSON.decode(data.inventory);
 			//Logging.getLogger(PlayerIcon).info(inv);
 			if (inv.length > 1)

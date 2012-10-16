@@ -17,7 +17,13 @@ $db = new Database($db_host, $db_user, $db_password, $db_database);
 
 $db->connect();
 
-$db->query("SELECT * FROM survivor WHERE last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND is_dead=0");
+//$db->query("SELECT * FROM survivor WHERE last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND is_dead=0");
+$db->query(
+	"SELECT survivor.id, survivor.model, survivor.state, survivor.worldspace, survivor.survivor_kills,survivor.bandit_kills, survivor.inventory,
+	profile.name, profile.humanity, profile.total_survivor_kills, profile.total_bandit_kills
+	FROM survivor
+	INNER JOIN profile ON profile.unique_id = survivor.unique_id
+	WHERE survivor.last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND survivor.is_dead=0");
 while ($row = $db->fetch())
 {
 	$pos = $row["worldspace"];
@@ -31,27 +37,25 @@ while ($row = $db->fetch())
 	$y *= -1;
 	
 	$id = $row["unique_id"];
-	$result2 = mysql_query("SELECT name,humanity FROM profile WHERE unique_id=$id");
-	$name = "Unnamed";
-	$humanity = 0;
-	if ($result2)
-	{
-		$row2 = mysql_fetch_array($result2);
-		$name = $row2["name"];
-		$humanity = $row2["humanity"];
-	}
+	$age = strtotime($row["last_updated"]) - strtotime("now");
+	$name = $row["name"];
+	$humanity = $row["humanity"];
+	$inventory = $row["inventory"];
+	$model = $row["model"];
+	$survivor_kills = $row["survivor_kills"] . " (" . $row["total_survivor_kills"] . ")";
+	$bandit_kills = $row["bandit_kills"] . " (" . $row["total_bandit_kills"] . ")";
 	
 	?>	<player>
 			<id><?=$row[id]?></id>
 			<name><![CDATA[<?=$name?>]]></name>
 			<x><?=$x?></x>
 			<y><?=$y?></y>
-			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<age><?=$age?></age>
 			<humanity><?=$humanity?></humanity>
-			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
-			<model><![CDATA[<?=$row["model"]?>]]></model>
-			<hkills><?=$row["survivor_kills"]?></hkills>
-			<bkills><?=$row["bandit_kills"]?></bkills>
+			<inventory><![CDATA[<?=$inventory?>]]></inventory>
+			<model><![CDATA[<?=$model?>]]></model>
+			<hkills><![CDATA[<?=$survivor_kills?>]]></hkills>
+			<bkills><![CDATA[<?=$bandit_kills?>]]></bkills>
 		</player>
 	<?php
 }
