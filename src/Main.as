@@ -40,7 +40,8 @@ package
 		private var _mapUrl:String = "map.txt";
 		private var _players:Vector.<PlayerIcon> = new Vector.<PlayerIcon>;
 		private var _timer:Timer = new Timer(10000);
-		private var _objects:Vector.<ObjectIcon> = new Vector.<ObjectIcon>;
+		private var _vehicles:Vector.<VehicleIcon> = new Vector.<VehicleIcon>;
+		private var _deployables:Vector.<DeployableIcon> = new Vector.<DeployableIcon>;
 		private var _loadingTF:TextField;
 		
 		public static var instance:Main;
@@ -192,29 +193,55 @@ package
 				}
 			}
 			
-			for each (var object:XML in xml.object)
+			for each (var vehicle:XML in xml.vehicle)
 			{
 				// search for icon with the same id
 				found = false;
-				id = object.id;				
-				for each (var obj:ObjectIcon in _objects)
+				id = vehicle.id;				
+				for each (var vehicl:VehicleIcon in _vehicles)
 				{
-					if (obj.id == id)
+					if (vehicl.id == id)
 					{
 						found = true;
 						
 						// update data
-						obj.newData(object);
+						vehicl.newData(vehicle);
 					}
 				}
 				
 				// if we didnt find one, add icon to list and as a child
 				if (!found)
 				{
-					obj = new ObjectIcon(object);
-					obj.mouseChildren = false;
-					_map.addChild(obj);
-					_objects.push(obj);
+					vehicl = new VehicleIcon(vehicle);
+					vehicl.mouseChildren = false;
+					_map.addChild(vehicl);
+					_vehicles.push(vehicl);
+				}
+			}
+			
+			for each (var deployable:XML in xml.deployable)
+			{
+				// search for icon with the same id
+				found = false;
+				id = deployable.id;				
+				for each (var deployabl:DeployableIcon in _deployables)
+				{
+					if (deployabl.id == id)
+					{
+						found = true;
+						
+						// update data
+						deployabl.newData(deployable);
+					}
+				}
+				
+				// if we didnt find one, add icon to list and as a child
+				if (!found)
+				{
+					deployabl = new DeployableIcon(deployable);
+					deployabl.mouseChildren = false;
+					_map.addChild(deployabl);
+					_deployables.push(deployabl);
 				}
 			}
 		}

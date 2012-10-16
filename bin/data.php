@@ -1,4 +1,5 @@
 <?php
+// works with schema 0.22
 error_reporting(0);
 
 header("Content-Type: text/plain");
@@ -7,83 +8,108 @@ header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
 include("config.php");
+include("Database.php");
 
 ?><stuff>
 <?php
 
-mysql_connect($host, $user, $password) or die ("Unable to connect");
-@mysql_select_db($database) or die ("Unable to select DB");
+$db = new Database($db_host, $db_user, $db_password, $db_database);
 
-$result = mysql_query("SELECT * FROM survivor WHERE last_update > DATE_SUB(now(), INTERVAL 5 MINUTE) AND is_dead=0");
-if ($result)
+$db->connect();
+
+$db->query("SELECT * FROM survivor WHERE last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND is_dead=0");
+while ($row = $db->fetch())
 {
-	while ($row = mysql_fetch_array($result))
-	{
-		$pos = $row["pos"];
-		$pos = str_replace(array("[","]"), "", $pos);
-		$posArray = explode(",", $pos);
+	$pos = $row["worldspace"];
+	$pos = str_replace(array("[","]"), "", $pos);
+	$posArray = explode(",", $pos);
 
-		$x = $posArray[1];
-		$y = $posArray[2];
-		
-		$y = $y - 15365;
-		$y *= -1;
-		
-		$id = $row["unique_id"];
-		$result2 = mysql_query("SELECT name,humanity FROM profile WHERE unique_id=$id");
-		$name = "Unnamed";
-		$humanity = 0;
-		if ($result2)
-		{
-			$row2 = mysql_fetch_array($result2);
-			$name = $row2["name"];
-			$humanity = $row2["humanity"];
-		}
-		
-?>	<player>
-		<id><?=$row[id]?></id>
-		<name><![CDATA[<?=$name?>]]></name>
-		<x><?=$x?></x>
-		<y><?=$y?></y>
-		<age><?=strtotime($row["last_update"]) - strtotime("now")?></age>
-		<humanity><?=$humanity?></humanity>
-		<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
-		<model><![CDATA[<?=$row["model"]?>]]></model>
-		<hkills><?=$row["survivor_kills"]?></hkills>
-		<bkills><?=$row["bandit_kills"]?></bkills>
-	</player>
-<?php
+	$x = $posArray[1];
+	$y = $posArray[2];
+	
+	$y = $y - 15365;
+	$y *= -1;
+	
+	$id = $row["unique_id"];
+	$result2 = mysql_query("SELECT name,humanity FROM profile WHERE unique_id=$id");
+	$name = "Unnamed";
+	$humanity = 0;
+	if ($result2)
+	{
+		$row2 = mysql_fetch_array($result2);
+		$name = $row2["name"];
+		$humanity = $row2["humanity"];
 	}
+	
+	?>	<player>
+			<id><?=$row[id]?></id>
+			<name><![CDATA[<?=$name?>]]></name>
+			<x><?=$x?></x>
+			<y><?=$y?></y>
+			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<humanity><?=$humanity?></humanity>
+			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+			<model><![CDATA[<?=$row["model"]?>]]></model>
+			<hkills><?=$row["survivor_kills"]?></hkills>
+			<bkills><?=$row["bandit_kills"]?></bkills>
+		</player>
+	<?php
 }
 
-$result = mysql_query("SELECT * FROM objects WHERE instance='$instance'");
-if ($result)
+$db->query(
+	"SELECT vehicle.id, vehicle.class_name, vehicle.inventory, instance_vehicle.worldspace, instance_vehicle.last_updated 
+	FROM instance_vehicle
+	INNER JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id");
+while ($row = $db->fetch())
 {
-	while ($row = mysql_fetch_array($result))
-	{
-		$pos = $row[pos];
-		$pos = str_replace(array("[","]"), "", $pos);
-		$posArray = explode(",", $pos);
+	$pos = $row["worldspace"];
+	$pos = str_replace(array("[","]"), "", $pos);
+	$posArray = explode(",", $pos);
 
-		$x = $posArray[1];
-		$y = $posArray[2];
-		
-		$y = $y - 15365;
-		$y *= -1;
-		
-?>	<object>
-		<id><?=$row[id]?></id>
-		<otype><![CDATA[<?=$row["otype"]?>]]></otype>
-		<x><?=$x?></x>
-		<y><?=$y?></y>
-		<age><?=strtotime($row["lastupdate"]) - strtotime("now")?></age>
-		<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
-	</object>
-<?php
-	}
+	$x = $posArray[1];
+	$y = $posArray[2];
+	
+	$y = $y - 15365;
+	$y *= -1;
+	
+	?>	<vehicle>
+			<id><?=$row["id"]?></id>
+			<otype><![CDATA[<?=$row["class_name"]?>]]></otype>
+			<x><?=$x?></x>
+			<y><?=$y?></y>
+			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+		</vehicle>
+	<?php
 }
 
+$db->query(
+	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, deployable.class_name 
+	FROM instance_deployable
+	INNER JOIN deployable ON deployable.id = instance_deployable.deployable_id");
+while ($row = $db->fetch())
+{
+	$pos = $row["worldspace"];
+	$pos = str_replace(array("[","]"), "", $pos);
+	$posArray = explode(",", $pos);
+
+	$x = $posArray[1];
+	$y = $posArray[2];
+	
+	$y = $y - 15365;
+	$y *= -1;
+	
+	?>	<deployable>
+			<id><?=$row["id"]?></id>
+			<otype><![CDATA[<?=$row["class_name"]?>]]></otype>
+			<x><?=$x?></x>
+			<y><?=$y?></y>
+			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+		</deployable>
+	<?php
+}
 ?></stuff><?php
 
-mysql_close();
+$db->close();
 ?>
