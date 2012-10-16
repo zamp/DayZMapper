@@ -9,7 +9,7 @@
 class Database
 { 
     // debug flag for showing error messages 
-    public $debug = true;
+    public $debug = false;
 
     private $server = ""; //database server 
     private $user = ""; //database login name 
