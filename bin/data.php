@@ -63,7 +63,7 @@ while ($row = $db->fetch())
 $db->query(
 	"SELECT vehicle.id, vehicle.class_name, vehicle.inventory, instance_vehicle.worldspace, instance_vehicle.last_updated 
 	FROM instance_vehicle
-	INNER JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id");
+	LEFT JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id");
 while ($row = $db->fetch())
 {
 	$pos = $row["worldspace"];
@@ -90,7 +90,7 @@ while ($row = $db->fetch())
 $db->query(
 	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, deployable.class_name 
 	FROM instance_deployable
-	INNER JOIN deployable ON deployable.id = instance_deployable.deployable_id");
+	LEFT JOIN deployable ON deployable.id = instance_deployable.deployable_id");
 while ($row = $db->fetch())
 {
 	$pos = $row["worldspace"];
