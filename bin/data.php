@@ -61,7 +61,7 @@ while ($row = $db->fetch())
 }
 
 $db->query(
-	"SELECT vehicle.id, vehicle.class_name, vehicle.inventory, instance_vehicle.worldspace, instance_vehicle.last_updated 
+	"SELECT instance_vehicle.id, vehicle.class_name, vehicle.inventory, instance_vehicle.worldspace, instance_vehicle.last_updated 
 	FROM instance_vehicle
 	LEFT JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id");
 while ($row = $db->fetch())
