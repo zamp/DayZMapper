@@ -46,16 +46,16 @@ while ($row = $db->fetch())
 	$bandit_kills = $row["bandit_kills"] . " (" . $row["total_bandit_kills"] . ")";
 	
 	?>	<player>
-			<id><?=$row[id]?></id>
-			<name><![CDATA[<?=$name?>]]></name>
-			<x><?=$x?></x>
-			<y><?=$y?></y>
-			<age><?=$age?></age>
-			<humanity><?=$humanity?></humanity>
-			<inventory><![CDATA[<?=$inventory?>]]></inventory>
-			<model><![CDATA[<?=$model?>]]></model>
-			<hkills><![CDATA[<?=$survivor_kills?>]]></hkills>
-			<bkills><![CDATA[<?=$bandit_kills?>]]></bkills>
+			<id><?php echo $row[id]?></id>
+			<name><![CDATA[<?php echo $name?>]]></name>
+			<x><?php echo $x?></x>
+			<y><?php echo $y?></y>
+			<age><?php echo $age?></age>
+			<humanity><?php echo $humanity?></humanity>
+			<inventory><![CDATA[<?php echo $inventory?>]]></inventory>
+			<model><![CDATA[<?php echo $model?>]]></model>
+			<hkills><![CDATA[<?php echo $survivor_kills?>]]></hkills>
+			<bkills><![CDATA[<?php echo $bandit_kills?>]]></bkills>
 		</player>
 	<?php
 }
@@ -77,12 +77,12 @@ while ($row = $db->fetch())
 	$y *= -1;
 	
 	?>	<vehicle>
-			<id><?=$row["id"]?></id>
-			<otype><![CDATA[<?=$row["class_name"]?>]]></otype>
-			<x><?=$x?></x>
-			<y><?=$y?></y>
-			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
-			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+			<id><?php echo $row["id"]?></id>
+			<otype><![CDATA[<?php echo $row["class_name"]?>]]></otype>
+			<x><?php echo $x?></x>
+			<y><?php echo $y?></y>
+			<age><?php echo strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<inventory><![CDATA[<?php echo $row["inventory"]?>]]></inventory>
 		</vehicle>
 	<?php
 }
@@ -104,12 +104,12 @@ while ($row = $db->fetch())
 	$y *= -1;
 	
 	?>	<deployable>
-			<id><?=$row["id"]?></id>
-			<otype><![CDATA[<?=$row["class_name"]?>]]></otype>
-			<x><?=$x?></x>
-			<y><?=$y?></y>
-			<age><?=strtotime($row["last_updated"]) - strtotime("now")?></age>
-			<inventory><![CDATA[<?=$row["inventory"]?>]]></inventory>
+			<id><?php echo $row["id"]?></id>
+			<otype><![CDATA[<?php echo $row["class_name"]?>]]></otype>
+			<x><?php echo $x?></x>
+			<y><?php echo $y?></y>
+			<age><?php echo strtotime($row["last_updated"]) - strtotime("now")?></age>
+			<inventory><![CDATA[<?php echo $row["inventory"]?>]]></inventory>
 		</deployable>
 	<?php
 }
