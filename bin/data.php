@@ -96,7 +96,8 @@ $db->query(
 	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, 
 	deployable.class_name
 	FROM instance_deployable
-	LEFT JOIN deployable ON deployable.id = instance_deployable.deployable_id");
+	LEFT JOIN deployable ON deployable.id = instance_deployable.deployable_id
+	WHERE instance_deployable.instance_id = $db_instance");
 while ($row = $db->fetch())
 {
 	$pos = $row["worldspace"];

@@ -46,6 +46,7 @@ package
 		
 		private var _line:Sprite = new Sprite();
 		private var _icon:Sprite = new Sprite();
+		private var _lastPos:Point = new Point();
 		
 		public function PlayerIcon(data:XML) 
 		{
@@ -153,13 +154,14 @@ package
 		private function updateGraphic(x:Number, y:Number, color:uint):void 
 		{
 			// draw new line piece
-			if (_oldpositions.length > 0)
+			if (_lastPos.x != 0 && _lastPos.y != 0)
 			{
 				_line.graphics.lineStyle(2, color, 0.6, true);
-				var lastPos:Point = _oldpositions[_oldpositions.length - 1];
-				_line.graphics.moveTo(lastPos.x, lastPos.y);
+				_line.graphics.moveTo(_lastPos.x, _lastPos.y);
 				_line.graphics.lineTo(x, y);
 			}
+			_lastPos.x = x;
+			_lastPos.y = y;
 			
 			_icon.x = x;
 			_icon.y = y;
