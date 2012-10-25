@@ -12,8 +12,7 @@ Thanks to Falcon911 for takistan map
 
 <b>TODO:</b>
 <pre>
-- Icons in the upper left corner to toggle player/vehicle/tent visibility
-- Toggleable position bounding (won't show out of map data)
+- Toggle for showing out of map positions
 </pre>
 
 <b>Optional Stuff:</b>
