@@ -4,6 +4,7 @@ package
 	import com.adobe.serialization.json.JSONDecoder;
 	import com.furusystems.logging.slf4as.Logging;
 	import com.greensock.TweenLite;
+	import flash.display.Bitmap;
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
@@ -18,7 +19,7 @@ package
 	 */
 	public class PlayerIcon extends Sprite
 	{
-		private var _id:int = -1;
+		private var _id:String = "";
 		private var _tooltip:Sprite;
 		private var _maxAge:Number = 300; // an hour
 		
@@ -44,6 +45,7 @@ package
 		static public var font_pftempesta:Class;
 		
 		private var _line:Sprite = new Sprite();
+		private var _icon:Sprite = new Sprite();
 		
 		public function PlayerIcon(data:XML) 
 		{
@@ -64,6 +66,9 @@ package
 			
 			addChild(_line);
 			_line.alpha = 0.5;
+			
+			_icon.addChild(new Assets.rIconPlayer);
+			addChild(_icon);
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			addEventListener(MouseEvent.ROLL_OUT, mouseOut);
@@ -147,21 +152,17 @@ package
 		
 		private function updateGraphic(x:Number, y:Number, color:uint):void 
 		{
-			graphics.clear();
-			_line.graphics.clear();
-			// draw shit
-			if (_oldpositions.length > 1)
+			// draw new line piece
+			if (_oldpositions.length > 0)
 			{
 				_line.graphics.lineStyle(2, color, 0.6, true);
-				_line.graphics.moveTo(x, y);
-				for each (var p:Point in _oldpositions)
-					_line.graphics.lineTo(p.x, p.y);
+				var lastPos:Point = _oldpositions[_oldpositions.length - 1];
+				_line.graphics.moveTo(lastPos.x, lastPos.y);
+				_line.graphics.lineTo(x, y);
 			}
 			
-			graphics.lineStyle(1, 0x000000, 1);
-			graphics.beginFill(color, 1);
-			graphics.drawCircle(x, y, 3);
-			graphics.endFill();
+			_icon.x = x;
+			_icon.y = y;
 		}
 		
 		public function newData(data:XML):void
@@ -180,7 +181,7 @@ package
 		{
 		}
 		
-		public function get id():int 
+		public function get id():String
 		{
 			return _id;
 		}

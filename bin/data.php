@@ -1,5 +1,5 @@
 <?php
-// works with schema 0.22
+// works with schema 0.26
 error_reporting(0);
 
 header("Content-Type: text/plain");
@@ -46,7 +46,7 @@ while ($row = $db->fetch())
 	$bandit_kills = $row["bandit_kills"] . " (" . $row["total_bandit_kills"] . ")";
 	
 	?>	<player>
-			<id><?php echo $row[id]?></id>
+			<id><![CDATA[<?php echo $id?>]]></id>
 			<name><![CDATA[<?php echo $name?>]]></name>
 			<x><?php echo $x?></x>
 			<y><?php echo $y?></y>
@@ -60,10 +60,15 @@ while ($row = $db->fetch())
 	<?php
 }
 
+/* vehicle.inventory = what spawns in vehicle
+instance_vehicle.inventory = what is in the vehicle
+*/
 $db->query(
-	"SELECT instance_vehicle.id, vehicle.class_name, vehicle.inventory, instance_vehicle.worldspace, instance_vehicle.last_updated 
+	"SELECT instance_vehicle.vehicle_id, instance_vehicle.inventory, instance_vehicle.worldspace,
+	vehicle.class_name
 	FROM instance_vehicle
-	LEFT JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id");
+	LEFT JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id
+	WHERE instance_vehicle.instance_id = $db_instance");
 while ($row = $db->fetch())
 {
 	$pos = $row["worldspace"];
@@ -77,7 +82,7 @@ while ($row = $db->fetch())
 	$y *= -1;
 	
 	?>	<vehicle>
-			<id><?php echo $row["id"]?></id>
+			<id><?php echo $row["vehicle_id"]?></id>
 			<otype><![CDATA[<?php echo $row["class_name"]?>]]></otype>
 			<x><?php echo $x?></x>
 			<y><?php echo $y?></y>
@@ -88,7 +93,8 @@ while ($row = $db->fetch())
 }
 
 $db->query(
-	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, deployable.class_name 
+	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, 
+	deployable.class_name
 	FROM instance_deployable
 	LEFT JOIN deployable ON deployable.id = instance_deployable.deployable_id");
 while ($row = $db->fetch())

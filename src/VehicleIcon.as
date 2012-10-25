@@ -3,6 +3,7 @@ package
 	import com.adobe.serialization.json.JSON;
 	import com.adobe.serialization.json.JSONDecoder;
 	import com.furusystems.logging.slf4as.Logging;
+	import flash.display.Bitmap;
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
@@ -24,6 +25,7 @@ package
 		private var _oldpositions:Vector.<Point> = new Vector.<Point>;
 		
 		private var _data:XML;
+		private var _icon:Sprite = new Sprite();
 		
 		[Embed(source="pf_tempesta_seven.ttf", fontName="pf_tempesta", mimeType = "application/x-font", embedAsCFF = "false")]
 		static public var font_pftempesta:Class;
@@ -44,6 +46,9 @@ package
 			
 			buildTooltip(data, coords);
 			
+			_icon.addChild(new Assets.rIconCar);
+			addChild(_icon);
+			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);
 			addEventListener(MouseEvent.ROLL_OUT, mouseOut);
 		}
@@ -59,7 +64,7 @@ package
 			
 			var tf:TextField = new TextField();
 			tf.embedFonts = true;
-			tf.defaultTextFormat = new TextFormat("pf_tempesta", 8, 0xffffff);			
+			tf.defaultTextFormat = new TextFormat("pf_tempesta", 8, 0xffffff);
 			//tf.filters = [new DropShadowFilter(0, 0, 0x000000, 1, 2, 2, 5)];
 			tf.textColor = 0xFFFFFF;
 			tf.x = 2;
@@ -104,21 +109,8 @@ package
 
 		private function updateGraphic(x:Number, y:Number):void 
 		{
-			var color:uint = 0xE0AE22;
-			graphics.clear();
-			// draw shit
-			/*if (_oldpositions.length > 1)
-			{
-				graphics.lineStyle(2, color, 0.6, true, "normal", CapsStyle.ROUND, JointStyle.BEVEL);
-				graphics.moveTo(x, y);
-				for each (var p:Point in _oldpositions)
-					graphics.lineTo(p.x, p.y);
-			}*/
-			
-			graphics.lineStyle(1, 0x000000, 1);
-			graphics.beginFill(color, 1);
-			graphics.drawRect(x, y, 5, 5);
-			graphics.endFill();
+			_icon.x = x;
+			_icon.y = y;
 		}
 		
 		public function newData(data:XML):void

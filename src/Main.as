@@ -2,6 +2,7 @@ package
 {
 	import com.furusystems.dconsole2.DConsole;
 	import com.furusystems.logging.slf4as.Logging;
+	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -43,6 +44,12 @@ package
 		private var _vehicles:Vector.<VehicleIcon> = new Vector.<VehicleIcon>;
 		private var _deployables:Vector.<DeployableIcon> = new Vector.<DeployableIcon>;
 		private var _loadingTF:TextField;
+		private var _showPlayers:Boolean = true;
+		private var _showBags:Boolean = true;
+		private var _showTents:Boolean = true;
+		private var _showVehicles:Boolean = true;
+		private var _showFences:Boolean = true;
+		private var _showTraps:Boolean = true;
 		
 		public static var instance:Main;
 		
@@ -91,6 +98,73 @@ package
 			loader.addEventListener(IOErrorEvent.IO_ERROR , xmlFail);
 			loader.load(new URLRequest(_mapUrl));
 			_loadingTF.text = "Loading map.txt";
+			
+			// add icons to toggle what is shown
+			var n:Number = 0;
+			addButton(togglePlayers, 5 + n * 18, 5, new Assets.rIconPlayer); n++;
+			addButton(toggleVehicles, 5 + n * 18, 5, new Assets.rIconCar); n++;
+			addButton(toggleTents, 5 + n * 18, 5, new Assets.rIconTent); n++;
+		}
+		
+		private function toggleTents(e:Event):void 
+		{
+			_showTents = !_showTents;
+			hideShowStuff();
+		}
+		
+		private function toggleVehicles(e:Event):void 
+		{
+			_showVehicles = !_showVehicles;
+			hideShowStuff();
+		}
+		
+		private function togglePlayers(e:Event):void 
+		{
+			_showPlayers = !_showPlayers;
+			hideShowStuff();
+		}
+		
+		private function hideShowStuff():void 
+		{
+			if (_showTents)
+			{
+				for each (var d:DeployableIcon in _deployables)
+					TweenLite.to(d, 1, { alpha:1 } );
+			} else {
+				for each (d in _deployables)
+					TweenLite.to(d, 1, { alpha:0 } );
+			}
+			
+			if (_showVehicles)
+			{
+				for each (var v:VehicleIcon in _vehicles)
+					TweenLite.to(v, 1, { alpha:1 } );
+			} else {
+				for each (v in _vehicles)
+					TweenLite.to(v, 1, { alpha:0 } );
+			}
+			
+			if (_showPlayers)
+			{
+				for each (var p:PlayerIcon in _players)
+					TweenLite.to(p, 1, { alpha:1 } );
+			} else {
+				for each (p in _players)
+					TweenLite.to(p, 1, { alpha:0 } );
+			}
+		}
+		
+		private function addButton(callback:Function, x:Number, y:Number, bitmap:Bitmap):void 
+		{
+			var s:Sprite = new Sprite();
+			s.x = x;
+			s.y = y;
+			
+			s.addEventListener(MouseEvent.CLICK, callback);
+			s.addChild(bitmap);
+			s.buttonMode = true;
+			
+			addChild(s);
 		}
 		
 		private function mapConfigLoaded(e:Event):void 
@@ -171,7 +245,7 @@ package
 			{
 				// search for icon with the same id
 				var found:Boolean = false;
-				var id:int = player.id;				
+				var id:String = String(player.id);
 				for each (var pi:PlayerIcon in _players)
 				{
 					if (pi.id == id)
@@ -197,10 +271,10 @@ package
 			{
 				// search for icon with the same id
 				found = false;
-				id = vehicle.id;				
+				var nid:int = vehicle.id;				
 				for each (var vehicl:VehicleIcon in _vehicles)
 				{
-					if (vehicl.id == id)
+					if (vehicl.id == nid)
 					{
 						found = true;
 						
@@ -223,10 +297,10 @@ package
 			{
 				// search for icon with the same id
 				found = false;
-				id = deployable.id;				
+				nid = deployable.id;				
 				for each (var deployabl:DeployableIcon in _deployables)
 				{
-					if (deployabl.id == id)
+					if (deployabl.id == nid)
 					{
 						found = true;
 						
