@@ -103,7 +103,7 @@ while($row = $db->fetch())
 	$row['x'] = $posArray[1][0];
 	$row['y'] = -($posArray[1][1]-15365);
 	
-	echo "\t" . '<deployable>';
+	echo "\t" . '<deployable>' . "\n";
 	foreach($row as $k => $v)
 	{
 		echo "\t\t" . '<' . $k . '><![CDATA[' . $v . ']]></' . $k . '>' . "\n";
