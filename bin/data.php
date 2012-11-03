@@ -1,5 +1,5 @@
 <?php
-// works with schema 0.26
+// works with schema 0.27
 error_reporting(0);
 
 header("Content-Type: text/plain");
@@ -10,117 +10,117 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 include("config.php");
 include("Database.php");
 
-?><stuff>
-<?php
+echo '<stuff>' . "\n";
 
 $db = new Database($db_host, $db_user, $db_password, $db_database);
 
 $db->connect();
 
-//$db->query("SELECT * FROM survivor WHERE last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND is_dead=0");
-$db->query(
-	"SELECT survivor.id, survivor.model, survivor.state, survivor.worldspace, survivor.survivor_kills,survivor.bandit_kills, survivor.inventory,
-	profile.name, profile.humanity, profile.total_survivor_kills, profile.total_bandit_kills
-	FROM survivor
-	INNER JOIN profile ON profile.unique_id = survivor.unique_id
-	WHERE survivor.last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE) AND survivor.is_dead=0");
-while ($row = $db->fetch())
-{
-	$pos = $row["worldspace"];
-	$pos = str_replace(array("[","]"), "", $pos);
-	$posArray = explode(",", $pos);
+$db->query("SELECT
+	s.id,
+	s.model,
+	s.state,
+	s.worldspace,
+	s.inventory,
+	p.name,
+	p.humanity,
+	concat(s.survivor_kills, ' (', p.total_survivor_kills, ')') survivor_kills,
+	concat(s.bandit_kills, ' (', p.total_bandit_kills, ')') bandit_kills
+FROM
+	survivor s
+INNER JOIN
+	profile p on p.unique_id = s.unique_id
+WHERE
+	s.last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE)
+AND
+	s.is_dead = 0
+");
 
-	$x = $posArray[1];
-	$y = $posArray[2];
+while($row = $db->fetch())
+{
+	$posArray = json_decode($row["worldspace"]);
 	
-	$y = $y - 15365;
-	$y *= -1;
+	$row['x'] = $posArray[1][0];
+	$row['y'] = -($posArray[1][1]-15365);
 	
-	$id = $row["unique_id"];
-	$age = strtotime($row["last_updated"]) - strtotime("now");
-	$name = $row["name"];
-	$humanity = $row["humanity"];
-	$inventory = $row["inventory"];
-	$model = $row["model"];
-	$survivor_kills = $row["survivor_kills"] . " (" . $row["total_survivor_kills"] . ")";
-	$bandit_kills = $row["bandit_kills"] . " (" . $row["total_bandit_kills"] . ")";
+	$player['id'] = $row["id"];
+	$player['x'] = $row['x'];
+	$player['y'] = $row['y'];
+	$player['age'] = strtotime($row["last_updated"]) - time();
+	$player['name'] = $row["name"];
+	$player['humanity'] = $row["humanity"];
+	$player['inventory'] = $row["inventory"];
+	$player['model'] = $row["model"];
+	$player['survivor_kills'] = $row["survivor_kills"];
+	$player['bandit_kills'] = $row["bandit_kills"];
 	
-	?>	<player>
-			<id><![CDATA[<?php echo $id?>]]></id>
-			<name><![CDATA[<?php echo $name?>]]></name>
-			<x><?php echo $x?></x>
-			<y><?php echo $y?></y>
-			<age><?php echo $age?></age>
-			<humanity><?php echo $humanity?></humanity>
-			<inventory><![CDATA[<?php echo $inventory?>]]></inventory>
-			<model><![CDATA[<?php echo $model?>]]></model>
-			<hkills><![CDATA[<?php echo $survivor_kills?>]]></hkills>
-			<bkills><![CDATA[<?php echo $bandit_kills?>]]></bkills>
-		</player>
-	<?php
+	echo "\t" . '<player>' . "\n";
+	foreach($player as $k => $v)
+	{
+		echo "\t\t" . '<' . $k . '><![CDATA[' . $v . ']]></' . $k . '>' . "\n";
+	}
+	echo "\t" . '</player>' . "\n";
 }
 
-/* vehicle.inventory = what spawns in vehicle
-instance_vehicle.inventory = what is in the vehicle
-*/
-$db->query(
-	"SELECT instance_vehicle.vehicle_id, instance_vehicle.inventory, instance_vehicle.worldspace,
-	vehicle.class_name
-	FROM instance_vehicle
-	LEFT JOIN vehicle ON vehicle.id = instance_vehicle.vehicle_id
-	WHERE instance_vehicle.instance_id = $db_instance");
-while ($row = $db->fetch())
-{
-	$pos = $row["worldspace"];
-	$pos = str_replace(array("[","]"), "", $pos);
-	$posArray = explode(",", $pos);
+$db->query("SELECT
+	iv.id as id,
+	iv.worldspace,
+	v.class_name otype,
+	iv.inventory,
+	iv.last_updated
+FROM
+	instance_vehicle iv
+JOIN
+	world_vehicle wv on iv.world_vehicle_id = wv.id
+JOIN
+	vehicle v on wv.vehicle_id = v.id
+");
 
-	$x = $posArray[1];
-	$y = $posArray[2];
+while($row = $db->fetch())
+{
+	$posArray = json_decode($row["worldspace"]);
 	
-	$y = $y - 15365;
-	$y *= -1;
+	$row['x'] = $posArray[1][0];
+	$row['y'] = -($posArray[1][1]-15365);
 	
-	?>	<vehicle>
-			<id><?php echo $row["vehicle_id"]?></id>
-			<otype><![CDATA[<?php echo $row["class_name"]?>]]></otype>
-			<x><?php echo $x?></x>
-			<y><?php echo $y?></y>
-			<age><?php echo strtotime($row["last_updated"]) - strtotime("now")?></age>
-			<inventory><![CDATA[<?php echo $row["inventory"]?>]]></inventory>
-		</vehicle>
-	<?php
+	$row['age'] = strtotime($row["last_updated"]) - date();
+	
+	echo "\t" . '<vehicle>' . "\n";
+	foreach($row as $k => $v)
+	{
+		echo "\t\t" . '<' . $k . '><![CDATA[' . $v . ']]></' . $k . '>' . "\n";
+	}
+	echo "\t" . '</vehicle>' . "\n";
 }
 
-$db->query(
-	"SELECT instance_deployable.id, instance_deployable.worldspace, instance_deployable.inventory, instance_deployable.last_updated, 
-	deployable.class_name
-	FROM instance_deployable
-	LEFT JOIN deployable ON deployable.id = instance_deployable.deployable_id
-	WHERE instance_deployable.instance_id = $db_instance");
-while ($row = $db->fetch())
-{
-	$pos = $row["worldspace"];
-	$pos = str_replace(array("[","]"), "", $pos);
-	$posArray = explode(",", $pos);
+$db->query("SELECT
+	id.id,
+	id.worldspace,
+	id.inventory,
+	id.last_updated,
+	d.class_name otype 
+FROM
+	instance_deployable id
+JOIN
+	deployable d on	d.id = id.deployable_id
+");
 
-	$x = $posArray[1];
-	$y = $posArray[2];
+while($row = $db->fetch())
+{
+	$posArray = json_decode($row["worldspace"]);
 	
-	$y = $y - 15365;
-	$y *= -1;
+	$row['x'] = $posArray[1][0];
+	$row['y'] = -($posArray[1][1]-15365);
 	
-	?>	<deployable>
-			<id><?php echo $row["id"]?></id>
-			<otype><![CDATA[<?php echo $row["class_name"]?>]]></otype>
-			<x><?php echo $x?></x>
-			<y><?php echo $y?></y>
-			<age><?php echo strtotime($row["last_updated"]) - strtotime("now")?></age>
-			<inventory><![CDATA[<?php echo $row["inventory"]?>]]></inventory>
-		</deployable>
-	<?php
+	echo "\t" . '<deployable>';
+	foreach($row as $k => $v)
+	{
+		echo "\t\t" . '<' . $k . '><![CDATA[' . $v . ']]></' . $k . '>' . "\n";
+	}
+	echo "\t" . '</deployable>' . "\n";
 }
-?></stuff><?php
+
+echo '</stuff>' . "\n";
 
 $db->close();
 ?>
