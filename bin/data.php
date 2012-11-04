@@ -2,21 +2,22 @@
 // works with schema 0.27
 error_reporting(0);
 
-header("Content-Type: text/plain");
+header('Content-Type: text/plain');
 // added to maybe fix cache blowing up to insane size
-header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 
-include("config.php");
-include("Database.php");
+include('config.php');
+
+try {
+	$db = new PDO('mysql:host='.$db['host'].';port='.$db['port'].';dbname='.$db['database'], $db['user'], $db['password']);
+} catch(PDOException $e) {
+	die($e -> getMessage());
+}
 
 echo '<stuff>' . "\n";
 
-$db = new Database($db_host, $db_user, $db_password, $db_database);
-
-$db->connect();
-
-$db->query("SELECT
+$query = $db->query("SELECT
 	s.id,
 	s.model,
 	s.state,
@@ -24,6 +25,7 @@ $db->query("SELECT
 	s.inventory,
 	p.name,
 	p.humanity,
+	s.last_updated,
 	concat(s.survivor_kills, ' (', p.total_survivor_kills, ')') survivor_kills,
 	concat(s.bandit_kills, ' (', p.total_bandit_kills, ')') bandit_kills
 FROM
@@ -36,14 +38,14 @@ AND
 	s.is_dead = 0
 ");
 
-while($row = $db->fetch())
+while($row = $query->fetch())
 {
-	$posArray = json_decode($row["worldspace"]);
+	$posArray = json_decode($row['worldspace']);
 	
 	$row['x'] = $posArray[1][0];
 	$row['y'] = -($posArray[1][1]-15365);
 	
-	$row['age'] = strtotime($row["last_updated"]) - time();
+	$row['age'] = strtotime($row['last_updated']) - time();
 	
 	echo "\t" . '<player>' . "\n";
 	foreach($row as $k => $v)
@@ -53,7 +55,7 @@ while($row = $db->fetch())
 	echo "\t" . '</player>' . "\n";
 }
 
-$db->query("SELECT
+$query = $db->query("SELECT
 	iv.id as id,
 	iv.worldspace,
 	v.class_name otype,
@@ -65,16 +67,18 @@ JOIN
 	world_vehicle wv on iv.world_vehicle_id = wv.id
 JOIN
 	vehicle v on wv.vehicle_id = v.id
+WHERE
+	iv.instance_id = " . $db->quote($config['instance']) . "
 ");
 
-while($row = $db->fetch())
+while($row = $query->fetch())
 {
 	$posArray = json_decode($row["worldspace"]);
 	
 	$row['x'] = $posArray[1][0];
 	$row['y'] = -($posArray[1][1]-15365);
 	
-	$row['age'] = strtotime($row["last_updated"]) - date();
+	$row['age'] = strtotime($row['last_updated']) - time();
 	
 	echo "\t" . '<vehicle>' . "\n";
 	foreach($row as $k => $v)
@@ -84,21 +88,21 @@ while($row = $db->fetch())
 	echo "\t" . '</vehicle>' . "\n";
 }
 
-$db->query("SELECT
+$query = $db->query("SELECT
 	id.id,
 	id.worldspace,
+	d.class_name otype,
 	id.inventory,
-	id.last_updated,
-	d.class_name otype 
+	id.last_updated
 FROM
 	instance_deployable id
 JOIN
 	deployable d on	d.id = id.deployable_id
 ");
 
-while($row = $db->fetch())
+while($row = $query->fetch())
 {
-	$posArray = json_decode($row["worldspace"]);
+	$posArray = json_decode($row['worldspace']);
 	
 	$row['x'] = $posArray[1][0];
 	$row['y'] = -($posArray[1][1]-15365);
@@ -113,5 +117,4 @@ while($row = $db->fetch())
 
 echo '</stuff>' . "\n";
 
-$db->close();
 ?>

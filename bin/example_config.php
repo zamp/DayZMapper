@@ -1,7 +1,11 @@
 <?php
-$db_user = "dayz";
-$db_password = "yourpassword";
-$db_database = "dayz_lingor";
-$db_host = "127.0.0.1:3306";
-$db_instance = 1;
+$db = array();
+$db['host'] = 'localhost'; // MySQL Server Host
+$db['port'] = '3306'; // MySQL Server Port
+$db['user'] = "dayz"; // MySQL Username
+$db['password'] = "yourpassword"; // MySQL Password
+$db['database'] = "dayz"; // MySQL Database
+
+$config = array();
+$config['instance'] = 1; // Instance number
 ?>
