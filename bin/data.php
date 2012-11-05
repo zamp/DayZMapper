@@ -38,7 +38,7 @@ AND
 	s.is_dead = 0
 ");
 
-while($row = $query->fetch())
+while($row = $query->fetch(PDO::FETCH_ASSOC))
 {
 	$posArray = json_decode($row['worldspace']);
 	
@@ -71,7 +71,7 @@ WHERE
 	iv.instance_id = " . $db->quote($config['instance']) . "
 ");
 
-while($row = $query->fetch())
+while($row = $query->fetch(PDO::FETCH_ASSOC))
 {
 	$posArray = json_decode($row["worldspace"]);
 	
@@ -100,7 +100,7 @@ JOIN
 	deployable d on	d.id = id.deployable_id
 ");
 
-while($row = $query->fetch())
+while($row = $query->fetch(PDO::FETCH_ASSOC))
 {
 	$posArray = json_decode($row['worldspace']);
 	
