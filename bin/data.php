@@ -46,6 +46,7 @@ while($row = $query->fetch(PDO::FETCH_ASSOC))
 	$row['y'] = -($posArray[1][1]-15365);
 	
 	$row['age'] = strtotime($row['last_updated']) - time();
+	$row['name'] = htmlspecialchars($row['name']);
 	
 	echo "\t" . '<player>' . "\n";
 	foreach($row as $k => $v)
