@@ -1,3 +1,13 @@
+<b>Supported Maps</b>
+<pre>
+-Chenarus
+-Lingor
+-Namalss
+-Panthera
+-Taktistan
+-Taviana
+</pre>
+
 <b>How to install:</b>
 
 <pre>
