@@ -99,6 +99,8 @@ FROM
 	instance_deployable id
 JOIN
 	deployable d on	d.id = id.deployable_id
+	WHERE
+id.instance_id = " . $db->quote($config['instance']) . "
 ");
 
 while($row = $query->fetch(PDO::FETCH_ASSOC))
