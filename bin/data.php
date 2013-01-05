@@ -1,11 +1,11 @@
 <?php
-// works with schema 0.27
+// Works with schema 0.36
 error_reporting(0);
 
 header('Content-Type: text/plain');
-// added to maybe fix cache blowing up to insane size
-header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+// Avoid browser caching
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 include('config.php');
 
@@ -17,7 +17,8 @@ try {
 
 echo '<stuff>' . "\n";
 
-$query = $db->query("SELECT
+// Fetch players
+$query = $db->prepare("SELECT
 	s.id,
 	s.model,
 	s.state,
@@ -35,10 +36,12 @@ INNER JOIN
 WHERE
 	s.last_updated > DATE_SUB(now(), INTERVAL 5 MINUTE)
 AND
-	s.is_dead = 0
-");
+	s.is_dead = 0");
 
-while($row = $query->fetch(PDO::FETCH_ASSOC))
+$query->execute(array($config['instance']));
+$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($rows as $row)
 {
 	$posArray = json_decode($row['worldspace']);
 	
@@ -56,7 +59,8 @@ while($row = $query->fetch(PDO::FETCH_ASSOC))
 	echo "\t" . '</player>' . "\n";
 }
 
-$query = $db->query("SELECT
+// Fetch vehicles
+$query = $db->prepare("SELECT
 	iv.id as id,
 	iv.worldspace,
 	v.class_name otype,
@@ -69,10 +73,12 @@ JOIN
 JOIN
 	vehicle v on wv.vehicle_id = v.id
 WHERE
-	iv.instance_id = " . $db->quote($config['instance']) . "
-");
+	iv.instance_id = ?");
 
-while($row = $query->fetch(PDO::FETCH_ASSOC))
+$query->execute(array($config['instance']));
+$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($rows as $row)
 {
 	$posArray = json_decode($row["worldspace"]);
 	
@@ -89,7 +95,8 @@ while($row = $query->fetch(PDO::FETCH_ASSOC))
 	echo "\t" . '</vehicle>' . "\n";
 }
 
-$query = $db->query("SELECT
+// Fetch deployables
+$query = $db->prepare("SELECT
 	id.id,
 	id.worldspace,
 	d.class_name otype,
@@ -99,9 +106,13 @@ FROM
 	instance_deployable id
 JOIN
 	deployable d on	d.id = id.deployable_id
-");
+WHERE
+	id.instance_id = ?");
 
-while($row = $query->fetch(PDO::FETCH_ASSOC))
+$query->execute(array($config['instance']));
+$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($rows as $row)
 {
 	$posArray = json_decode($row['worldspace']);
 	
