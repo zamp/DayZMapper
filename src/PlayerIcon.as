@@ -50,7 +50,7 @@ package
 		private var _line:Sprite = new Sprite();
 		private var _icon:Sprite = new Sprite();
 		private var _lastPos:Point = new Point();
-		private var _size:Number = 6;
+		private var _size:Number = 3;
 		
 		public function PlayerIcon(data:XML) 
 		{
@@ -75,9 +75,9 @@ package
 			if (Main.instance.icons)
 				_icon.addChild(new Assets.rIconPlayer);
 			else {
-				var c:uint = 0xFF0000;
-				_icon.graphics.beginFill(c, 1);
-				_icon.graphics.lineStyle(1, c/2, 1);
+				var c:uint = 0x800000;
+				_icon.graphics.lineStyle(1, 0xFF0000, 1);
+				_icon.graphics.beginFill(c, 1);				
 				_icon.graphics.drawCircle( -_size / 2, -_size / 2, _size);
 				_icon.graphics.endFill();
 			}

@@ -50,9 +50,8 @@ package
 			if (Main.instance.icons)
 				_icon.addChild(new Assets.rIconCar);
 			else {
-				var c:uint = 0xFFC0F0;
-				_icon.graphics.beginFill(c, 1);
-				_icon.graphics.lineStyle(1, c/2, 1);
+				_icon.graphics.beginFill(0xC29400, 1);
+				_icon.graphics.lineStyle(1, 0xFFC200, 1);
 				_icon.graphics.drawRect( -_size / 2, -_size / 2, _size, _size);
 				_icon.graphics.endFill();
 			}
