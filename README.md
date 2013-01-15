@@ -33,8 +33,8 @@ If you want to use your own map graphic you need to specify certain values in th
 Here is an example map.txt with comments (Do not add comments in the map.txt otherwise it will not work!)
 <pre>
 maps/chernarus.jpg 	// the map file that is loaded.
-1234 				// how wide the image is in pixels
-4321 				// how tall the image is in pixels
+1234 				// image width in pixels
+4321 				// image height in pixels
 100 				// origo X offset in meters, origo means coordinates 0,0
 30 					// origo Y offset in meters
 1000 				// map X size in meters, these can be found in the dayz database
