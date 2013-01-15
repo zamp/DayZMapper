@@ -28,9 +28,9 @@ package
 		// list of weapons that will show up in player tooltip
 		private var weapons:Array = [
 			"M14_EP1", "Remington870_lamp", "M4A3_CCO_EP1", "M4A1_AIM_SD_camo", "BAF_L85A2_RIS_CWS", "BAF_AS50_scoped", "Winchester1866", "LeeEnfield",
-			"revolver_EP1", "FN_FAL", "FN_FAL_ANPVS4", "m107_DZ", "Mk_48_DZ", "DMR", "M16A2", "M16A2GL", "bizon_silenced", "AK_74", "M4A1_Aim",  "AKS_74_kobra",
+			"revolver_EP1", "FN_FAL", "FN_FAL_ANPVS4", "Mk_48_DZ", "DMR", "M16A2", "M16A2GL", "bizon_silenced", "AK_74", "M4A1_Aim",  "AKS_74_kobra",
 			"AKS_74_U",  "AK_47_M", "M24", "M1014", "M4A1", "MP5SD", "MP5A5", "huntingrifle", "Crossbow", "glock17_EP1", "M9", "M9SD", "Colt1911", "UZI_EP1",
-			"m16a4_acg", "SVD_Camo"
+			"m16a4_acg", "SVD_Camo", "M107_DZ"
 		];
 		
 		// list of key items that will show up in player tooltip
@@ -50,6 +50,7 @@ package
 		private var _line:Sprite = new Sprite();
 		private var _icon:Sprite = new Sprite();
 		private var _lastPos:Point = new Point();
+		private var _size:Number = 6;
 		
 		public function PlayerIcon(data:XML) 
 		{
@@ -71,13 +72,14 @@ package
 			addChild(_line);
 			_line.alpha = 0.5;
 			
-			if (!Settings.noPlayerIcons)
+			if (Main.instance.icons)
 				_icon.addChild(new Assets.rIconPlayer);
-			else
-			{
-				_icon.graphics.lineStyle(1, 0xFF6666, 0.5);
-				_icon.graphics.beginFill(0xFF0000, 1);
-				_icon.graphics.drawCircle( -2, -2, 4);
+			else {
+				var c:uint = 0xFF0000;
+				_icon.graphics.beginFill(c, 1);
+				_icon.graphics.lineStyle(1, c/2, 1);
+				_icon.graphics.drawCircle( -_size / 2, -_size / 2, _size);
+				_icon.graphics.endFill();
 			}
 			addChild(_icon);
 			
@@ -127,8 +129,8 @@ package
 						tf.htmlText += "<font color=\"#8080ff\">" + inv[0][i] + "</font>\n";
 			}
 			
-			_tooltip.x = coords.x;
-			_tooltip.y = coords.y - (tf.textHeight + 3);
+			_tooltip.x = Math.floor(coords.x + 10);
+			_tooltip.y = Math.floor(coords.y);
 			
 			_tooltip.graphics.beginFill(0x223344, 0.7);
 			_tooltip.graphics.lineStyle(1, 0x000000, 0.7);
@@ -196,6 +198,16 @@ package
 		public function get id():String
 		{
 			return _id;
+		}
+		
+		public function get icon():Sprite 
+		{
+			return _icon;
+		}
+		
+		public function get tooltip():Sprite 
+		{
+			return _tooltip;
 		}
 		
 	}

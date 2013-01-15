@@ -1,6 +1,7 @@
 package 
 {
 	import com.furusystems.dconsole2.DConsole;
+	import com.furusystems.dconsole2.plugins.ScreenshotUtil;
 	import com.furusystems.logging.slf4as.Logging;
 	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
@@ -10,6 +11,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.filters.DropShadowFilter;
@@ -20,6 +22,7 @@ package
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.ui.Keyboard;
 	import flash.utils.Timer;
 	
 	/**
@@ -50,6 +53,7 @@ package
 		private var _showVehicles:Boolean = true;
 		private var _showFences:Boolean = true;
 		private var _showTraps:Boolean = true;
+		private var _icons:Boolean = true;
 		
 		public static var instance:Main;
 		
@@ -73,8 +77,11 @@ package
 			_map.addEventListener(MouseEvent.MOUSE_UP, mouseUp);
 			addChild(_map);
 			
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, wheel);
+			
 			// pull data from server
 			addChild(DConsole.view);
+			DConsole.registerPlugins(ScreenshotUtil);
 			
 			_loadingTF = new TextField();
 			_loadingTF.embedFonts = true;
@@ -104,6 +111,64 @@ package
 			addButton(togglePlayers, 5 + n * 18, 5, new Assets.rIconPlayer); n++;
 			addButton(toggleVehicles, 5 + n * 18, 5, new Assets.rIconCar); n++;
 			addButton(toggleTents, 5 + n * 18, 5, new Assets.rIconTent); n++;
+		}
+		
+		protected function scaleAround(offsetX:Number, offsetY:Number, absScaleX:Number, absScaleY:Number):void 
+		{ 
+			// scaling will be done relatively 
+			var relScaleX:Number = absScaleX / _map.scaleX; 
+			var relScaleY:Number = absScaleY / _map.scaleY; 
+			// map vector to centre point within parent scope 
+			var AC:Point = new Point( offsetX, offsetY ); 
+			AC = _map.localToGlobal( AC ); 
+			AC = _map.parent.globalToLocal( AC ); 
+			// current registered postion AB 
+			var AB:Point = new Point( _map.x, _map.y ); 
+			// CB = AB - AC, this vector that will scale as it runs from the centre 
+			var CB:Point = AB.subtract( AC ); 
+			CB.x *= relScaleX; 
+			CB.y *= relScaleY; 
+			// recaulate AB, this will be the adjusted position for the clip 
+			AB = AC.add( CB ); 
+			// set actual properties 
+			_map.scaleX *= relScaleX; 
+			_map.scaleY *= relScaleY; 
+			_map.x = AB.x; 
+			_map.y = AB.y;
+		}
+		
+		private function wheel(e:MouseEvent):void 
+		{
+			var s:Number = _map.scaleX + (e.delta / 8);
+			s = s < 0.5 ? 0.5 : s;
+			s = s > 4 ? 4 : s;
+			scaleAround(e.localX, e.localY, s, s);
+			scaleIcons();
+		}
+		
+		private function scaleIcons():void 
+		{
+			for each (var d:DeployableIcon in _deployables)
+			{
+				d.icon.scaleX = 1 / _map.scaleX;
+				d.icon.scaleY = 1 / _map.scaleY;
+				d.tooltip.scaleX = 1 / _map.scaleX;
+				d.tooltip.scaleY = 1 / _map.scaleX;
+			}
+			for each (var v:VehicleIcon in _vehicles)
+			{
+				v.icon.scaleX = 1 / _map.scaleX;
+				v.icon.scaleY = 1 / _map.scaleY;
+				v.tooltip.scaleX = 1 / _map.scaleX;
+				v.tooltip.scaleY = 1 / _map.scaleX;
+			}
+			for each (var p:PlayerIcon in _players)
+			{
+				p.icon.scaleX = 1 / _map.scaleX;
+				p.icon.scaleY = 1 / _map.scaleY;
+				p.tooltip.scaleX = 1 / _map.scaleX;
+				p.tooltip.scaleY = 1 / _map.scaleX;
+			}
 		}
 		
 		private function toggleTents(e:Event):void 
@@ -176,7 +241,7 @@ package
 			IMAGE_HEIGHT = lines[2];
 			OFFSET_X = lines[3];
 			OFFSET_Y = lines[4];
-			SCALE_X = lines[5];			
+			SCALE_X = lines[5];
 			SCALE_Y = lines[6];
 			
 			var loader:Loader = new Loader();
@@ -192,6 +257,11 @@ package
 				_map.x = derp.data.mapX;
 			if (derp.data.mapY != null)
 				_map.y = derp.data.mapY;
+			if (derp.data.mapScale != null)
+			{
+				_map.scaleX = derp.data.mapScale;
+				_map.scaleY = derp.data.mapScale;
+			}
 				
 			_loadingTF.text = "Load complete.";
 			_map.addChild(e.target.content as Bitmap);
@@ -208,6 +278,7 @@ package
 			var derp:SharedObject = SharedObject.getLocal("mapPos");
 			derp.data.mapX = _map.x;
 			derp.data.mapY = _map.y;
+			derp.data.mapScale = _map.scaleX;
 			derp.flush();
 		}
 		
@@ -232,12 +303,21 @@ package
 			_loadingTF.text = "Refresh failed.";
 		}
 		
+		public static function str2bool(str:String):Boolean
+		{
+			if (str.toLowerCase() == "true")
+				return true;
+			return false;
+		}
+		
 		private function xmlLoaded(e:Event):void 
 		{
 			_loadingTF.text = "";
 			Logging.getLogger(Main).error("I got something");
 			
 			var xml:XML = new XML(e.target.data);
+			
+			_icons = str2bool(xml.icons);
 			
 			//Logging.getLogger(Main).info(xml);
 			
@@ -323,6 +403,11 @@ package
 		public function get map():Sprite 
 		{
 			return _map;
+		}
+		
+		public function get icons():Boolean 
+		{
+			return _icons;
 		}
 		
 		public static function convertCoords(x:Number, y:Number):Point

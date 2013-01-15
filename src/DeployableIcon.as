@@ -27,6 +27,8 @@ package
 		private var _data:XML;
 		private var _icon:Sprite = new Sprite();
 		
+		private var _size:Number = 6;
+		
 		[Embed(source="pf_tempesta_seven.ttf", fontName="pf_tempesta", mimeType = "application/x-font", embedAsCFF = "false")]
 		static public var font_pftempesta:Class;
 		
@@ -46,21 +48,44 @@ package
 			
 			buildTooltip(data, coords);
 			
+			var c:uint = 0xFFFFFF;
+			
 			switch (String(data.otype))
 			{
 				case "TentStorage":
-					_icon.addChild(new Assets.rIconTent);
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTent);
+					else 
+						c = 0x00AA00;
 				break;
 				case "Wire_cat1":
-					_icon.addChild(new Assets.rIconFence);
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconFence);
+					else 
+						c = 0x404040;
 				break;
 				case "Hedgehog_DZ":
-					_icon.addChild(new Assets.rIconTrap);
-				break;
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+					break;
 				case "Sandbag1_DZ":
-					_icon.addChild(new Assets.rIconBag);
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconBag);
+					else 
+						c = 0x404040;
 				break;
 			}
+			
+			if (!Main.instance.icons)
+			{
+				_icon.graphics.beginFill(c, 1);
+				_icon.graphics.lineStyle(1, c/2, 1);
+				_icon.graphics.drawRect( -_size / 2, -_size / 2, _size, _size);
+				_icon.graphics.endFill();
+			}
+			
 			addChild(_icon);
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);
@@ -98,8 +123,8 @@ package
 					tf.htmlText += inv[i][1][j] + "x " + inv[i][0][j] + "\n";
 				}
 			}
-			_tooltip.x = coords.x;
-			_tooltip.y = coords.y - (tf.textHeight + 3);
+			_tooltip.x = Math.floor(coords.x + 10);
+			_tooltip.y = Math.floor(coords.y);
 			
 			_tooltip.graphics.beginFill(0x223344, 0.7);
 			_tooltip.graphics.lineStyle(1, 0x000000, 0.7);
@@ -140,6 +165,16 @@ package
 		public function get id():int 
 		{
 			return _id;
+		}
+		
+		public function get icon():Sprite 
+		{
+			return _icon;
+		}
+		
+		public function get tooltip():Sprite 
+		{
+			return _tooltip;
 		}
 		
 	}

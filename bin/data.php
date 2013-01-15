@@ -16,6 +16,7 @@ try {
 }
 
 echo '<stuff>' . "\n";
+echo "\t<icons>".($config['icons']?"true":"false")."</icons>\n";
 
 // Fetch players
 $query = $db->prepare("SELECT

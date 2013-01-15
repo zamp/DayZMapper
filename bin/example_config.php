@@ -8,4 +8,5 @@ $db['database'] = "dayz"; // MySQL Database
 
 $config = array();
 $config['instance'] = 1; // Instance number
+$config['icons'] = true;
 ?>

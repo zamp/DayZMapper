@@ -26,6 +26,7 @@ package
 		
 		private var _data:XML;
 		private var _icon:Sprite = new Sprite();
+		private var _size:Number = 6;
 		
 		[Embed(source="pf_tempesta_seven.ttf", fontName="pf_tempesta", mimeType = "application/x-font", embedAsCFF = "false")]
 		static public var font_pftempesta:Class;
@@ -46,7 +47,15 @@ package
 			
 			buildTooltip(data, coords);
 			
-			_icon.addChild(new Assets.rIconCar);
+			if (Main.instance.icons)
+				_icon.addChild(new Assets.rIconCar);
+			else {
+				var c:uint = 0xFFC0F0;
+				_icon.graphics.beginFill(c, 1);
+				_icon.graphics.lineStyle(1, c/2, 1);
+				_icon.graphics.drawRect( -_size / 2, -_size / 2, _size, _size);
+				_icon.graphics.endFill();
+			}
 			addChild(_icon);
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);
@@ -84,8 +93,8 @@ package
 					tf.htmlText += inv[i][1][j] + "x " + inv[i][0][j] + "\n";
 				}
 			}
-			_tooltip.x = coords.x;
-			_tooltip.y = coords.y - (tf.textHeight + 3);
+			_tooltip.x = Math.floor(coords.x + 10);
+			_tooltip.y = Math.floor(coords.y);
 			
 			_tooltip.graphics.beginFill(0x223344, 0.7);
 			_tooltip.graphics.lineStyle(1, 0x000000, 0.7);
@@ -126,6 +135,16 @@ package
 		public function get id():int 
 		{
 			return _id;
+		}
+		
+		public function get icon():Sprite 
+		{
+			return _icon;
+		}
+		
+		public function get tooltip():Sprite 
+		{
+			return _tooltip;
 		}
 		
 	}
