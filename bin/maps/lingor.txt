@@ -1,4 +1,4 @@
-map_lingor.jpg
+maps/lingor.jpg
 2000
 2000
 0

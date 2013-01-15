@@ -1,4 +1,4 @@
-map_takistan.jpg
+maps/takistan.jpg
 2341
 2386
 165

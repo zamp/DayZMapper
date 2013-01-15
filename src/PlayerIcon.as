@@ -25,6 +25,7 @@ package
 		
 		private var _oldpositions:Vector.<Point> = new Vector.<Point>;
 		
+		// list of weapons that will show up in player tooltip
 		private var weapons:Array = [
 			"M14_EP1", "Remington870_lamp", "M4A3_CCO_EP1", "M4A1_AIM_SD_camo", "BAF_L85A2_RIS_CWS", "BAF_AS50_scoped", "Winchester1866", "LeeEnfield",
 			"revolver_EP1", "FN_FAL", "FN_FAL_ANPVS4", "m107_DZ", "Mk_48_DZ", "DMR", "M16A2", "M16A2GL", "bizon_silenced", "AK_74", "M4A1_Aim",  "AKS_74_kobra",
@@ -32,12 +33,14 @@ package
 			"m16a4_acg", "SVD_Camo"
 		];
 		
+		// list of key items that will show up in player tooltip
 		private var keyItems:Array = [
 			"Binocular_Vector",
 			"NVGoggles",
 			"ItemGPS",
 			"ItemTent"
 		];
+		
 		
 		private var _data:XML;
 		
@@ -68,7 +71,14 @@ package
 			addChild(_line);
 			_line.alpha = 0.5;
 			
-			_icon.addChild(new Assets.rIconPlayer);
+			if (!Settings.noPlayerIcons)
+				_icon.addChild(new Assets.rIconPlayer);
+			else
+			{
+				_icon.graphics.lineStyle(1, 0xFF6666, 0.5);
+				_icon.graphics.beginFill(0xFF0000, 1);
+				_icon.graphics.drawCircle( -2, -2, 4);
+			}
 			addChild(_icon);
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseOver);

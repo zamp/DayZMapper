@@ -1,4 +1,4 @@
-map_chernarus.jpg
+maps/chernarus.jpg
 2047
 1982
 -700

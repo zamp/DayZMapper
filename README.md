@@ -1,10 +1,10 @@
 <b>Supported Maps</b>
 <pre>
--Chenarus
+-Chernarus
 -Lingor
--Namalss
+-Namalsk
 -Panthera
--Taktistan
+-Takistan
 -Taviana
 </pre>
 
@@ -15,8 +15,7 @@
 will need either apache or some other http server that can handle php)
 2. Rename example_config.php to config.php
 3. Change config.php to have your username/password/hostname etc.
-4. Rename one of the map_MAPNAME_example.txt to map.txt (chernarus for chernarus, etc.) 
-Thanks to Falcon911 for takistan map
+4. Copy one map txt file from maps and rename to map.txt
 5. Point your browser to wherever you copied stuff to.
 </pre>
 
@@ -27,19 +26,19 @@ Thanks to Falcon911 for takistan map
 
 <b>Optional Stuff:</b>
 
-Create .htaccess file to password protect the website.
+Create .htaccess file to password protect the website. See http://httpd.apache.org/docs/current/howto/htaccess.html
 
 If you want to use your own map graphic you need to specify certain values in the map.txt
 
 Here is an example map.txt with comments (Do not add comments in the map.txt otherwise it will not work!)
 <pre>
-map_chernarus.jpg // the map file that is loaded.
-1234 // how wide the image is
-4321 // how tall the image is
-100 // X offset of the image. 0 coordinate is 100 meters away from the left edge
-30 // Y offset of the image. 0 coordinate is 30 meters away from the bottom edge
-1000 // map X scale. how many meters are on the map X axis
-1000 // map Y scale. how many meters are on the map Y axis
+maps/chernarus.jpg 	// the map file that is loaded.
+1234 				// how wide the image is in pixels
+4321 				// how tall the image is in pixels
+100 				// origo X offset in meters, origo means coordinates 0,0
+30 					// origo Y offset in meters
+1000 				// map X size in meters, these can be found in the dayz database
+1000 				// map Y size in meters
 </pre>
 
 If you have any questions ask zamp @ freenode/ircnet/quakenet/whatever just whois me.

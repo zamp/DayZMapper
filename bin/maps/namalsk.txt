@@ -1,4 +1,4 @@
-map_namalsk.png
+maps/namalsk.png
 2560
 2560
 60
