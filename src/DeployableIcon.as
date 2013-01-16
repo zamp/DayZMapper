@@ -132,6 +132,8 @@ package
 			
 			_tooltip.addChild(tf);
 			_tooltip.alpha = 0;
+			_tooltip.scaleX = 1 / Main.instance.map.scaleX;
+			_tooltip.scaleY = 1 / Main.instance.map.scaleY;
 			
 			Main.instance.map.addChild(_tooltip);
 		}
@@ -150,6 +152,8 @@ package
 		{
 			_icon.x = x;
 			_icon.y = y;
+			_icon.scaleX = 1 / Main.instance.map.scaleX;
+			_icon.scaleY = 1 / Main.instance.map.scaleY;
 		}
 		
 		public function newData(data:XML):void
