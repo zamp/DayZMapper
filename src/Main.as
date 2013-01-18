@@ -89,7 +89,7 @@ package
 			_loadingTF.filters = [new DropShadowFilter(0, 0, 0x000000, 1, 2, 2, 5)];
 			_loadingTF.textColor = 0xFFFFFF;
 			_loadingTF.x = 5;
-			_loadingTF.y = 2;
+			_loadingTF.y = 18;
 			_loadingTF.width = 1000;
 			_loadingTF.height = 1000;
 			_loadingTF.selectable = false;
@@ -299,8 +299,8 @@ package
 		
 		private function xmlFail(e:IOErrorEvent):void 
 		{
-			Logging.getLogger(Main).error("Couldn't fetch xml file");
-			_loadingTF.text = "Refresh failed.";
+			Logging.getLogger(Main).error("Couldn't fetch xml file: " + e.toString());
+			_loadingTF.text = "Refresh failed: " + e.toString();
 		}
 		
 		public static function str2bool(str:String):Boolean
@@ -313,7 +313,7 @@ package
 		private function xmlLoaded(e:Event):void 
 		{
 			_loadingTF.text = "";
-			Logging.getLogger(Main).error("I got something");
+			//Logging.getLogger(Main).info("I got something");
 			
 			var xml:XML = new XML(e.target.data);
 			
