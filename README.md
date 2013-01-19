@@ -29,6 +29,8 @@ will need either apache or some other http server that can handle php)
 
 <b>Optional Stuff:</b>
 
+Open console with CTRL+SHIFT+ENTER
+
 Create .htaccess file to password protect the website. See http://httpd.apache.org/docs/current/howto/htaccess.html
 
 If you want to use your own map graphic you need to specify certain values in the map.txt
