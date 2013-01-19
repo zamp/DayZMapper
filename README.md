@@ -1,11 +1,11 @@
 <b>Supported Maps</b>
 <pre>
--Chernarus
--Lingor
--Namalsk
--Panthera
--Takistan
--Taviana
+- Chernarus
+- Lingor
+- Namalsk
+- Panthera
+- Takistan
+- Taviana
 </pre>
 
 <b>How to install:</b>
