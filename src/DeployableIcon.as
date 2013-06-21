@@ -58,6 +58,18 @@ package
 					else 
 						c = 0x00AA00;
 				break;
+				case "StashSmall":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconStashSmall);
+					else 
+						c = 0x00AA00;
+				break;
+				case "StashMedium":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconStashMedium);
+					else 
+						c = 0x00AA00;
+				break;
 				case "Wire_cat1":
 					if (Main.instance.icons)
 						_icon.addChild(new Assets.rIconFence);
