@@ -89,6 +89,7 @@ package
 			"DMR_DZ",
 			"M1014",
 			"huntingrifle",
+			"MR43",
 			"PKT_2",
 			"BAF_L2A1",
 			"BAF_M240_veh",
