@@ -1,3 +1,9 @@
+<b>Changes by wterpstra</b>
+<pre>
+- Added support for medium and small stashes used in DayZ version 1.7.7 and up.
+- Updated list of weapons that show up in the player tooltip, should work with all weapons used in DayZ version 1.7.7.1
+</pre>
+
 <b>Supported Maps</b>
 <pre>
 - Chernarus
