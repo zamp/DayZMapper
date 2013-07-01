@@ -159,6 +159,7 @@ package
 			"MP5A5",
 			"huntingrifle",
 			"Crossbow",
+			"Crossbow_DZ",
 			"glock17_EP1",
 			"M9",
 			"M9SD",
