@@ -167,7 +167,6 @@ package
 			"m16a4_acg",
 			"SVD_Camo",
 			"M107_DZ",
-			"DMR_DZ",
 			"M249_DZ",
 			"MeleeHatchet",
 			"MeleeMachete",
