@@ -16,23 +16,35 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'18.1.2013'</value>
+      <value>'10-7-2013'</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::air</name>
+      <value>false</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::mobile</name>
+      <value>false</value>
+    </define>
+    <define append="true">
+      <name>CONFIG::desktop</name>
+      <value>false</value>
     </define>
     <optimize>true</optimize>
     <omit-trace-statements>true</omit-trace-statements>
     <verbose-stacktraces>false</verbose-stacktraces>
     <source-path append="true">
-      <path-element>F:\Google Drive\Projects\flash\dayzmapper\src</path-element>
-      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
+      <path-element>D:\Software Archief\DayZMapper\src</path-element>
+      <path-element>P:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>F:\Google Drive\Projects\flash\dayzmapper\lib\DConsole2.3.swc</path-element>
-      <path-element>F:\Google Drive\Projects\flash\dayzmapper\lib\greensock.swc</path-element>
-      <path-element>F:\Google Drive\Projects\flash\dayzmapper\lib\LiquifyComps-1-14-77852fa59c4e.swc</path-element>
+      <path-element>D:\Software Archief\DayZMapper\lib\DConsole2.3.swc</path-element>
+      <path-element>D:\Software Archief\DayZMapper\lib\greensock.swc</path-element>
+      <path-element>D:\Software Archief\DayZMapper\lib\LiquifyComps-1-14-77852fa59c4e.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>F:\Google Drive\Projects\flash\dayzmapper\src\Main.as</path-element>
+    <path-element>D:\Software Archief\DayZMapper\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
