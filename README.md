@@ -3,6 +3,7 @@
 - Chernarus
 - Lingor
 - Namalsk
+- Oring
 - Panthera
 - Takistan
 - Taviana
