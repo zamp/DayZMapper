@@ -60,13 +60,13 @@ package
 				break;
 				case "StashSmall":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconStashSmall);
+						_icon.addChild(new Assets.rIconStash);
 					else 
 						c = 0x00AA00;
 				break;
 				case "StashMedium":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconStashMedium);
+						_icon.addChild(new Assets.rIconStash);
 					else 
 						c = 0x00AA00;
 				break;
@@ -81,10 +81,70 @@ package
 						_icon.addChild(new Assets.rIconTrap);
 					else 
 						c = 0x404040;
-					break;
+				break;
 				case "Sandbag1_DZ":
 					if (Main.instance.icons)
 						_icon.addChild(new Assets.rIconBag);
+					else 
+						c = 0x404040;
+				break;
+				case "DomeTentStorage":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTent);
+					else 
+						c = 0x404040;
+				break;
+				case "CamoNet_DZ":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconCamoNet);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapBear":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "Trap_Cans":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapTripwireFlare":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapBearTrapSmoke":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapTripwireGrenade":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapBearTrapSmoke":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapTripwireSmoke":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
+					else 
+						c = 0x404040;
+				break;
+				case "TrapBearTrapFlare":
+					if (Main.instance.icons)
+						_icon.addChild(new Assets.rIconTrap);
 					else 
 						c = 0x404040;
 				break;
