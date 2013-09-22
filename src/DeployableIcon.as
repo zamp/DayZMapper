@@ -60,13 +60,13 @@ package
 				break;
 				case "StashSmall":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconStashSmall);
+						_icon.addChild(new Assets.rIconStash);
 					else 
 						c = 0x00AA00;
 				break;
 				case "StashMedium":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconStashMedium);
+						_icon.addChild(new Assets.rIconStash);
 					else 
 						c = 0x00AA00;
 				break;
