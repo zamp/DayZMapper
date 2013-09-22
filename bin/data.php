@@ -28,8 +28,8 @@ $query = $db->prepare("SELECT
 	p.name,
 	p.humanity,
 	s.last_updated,
-	concat(s.survivor_kills, ' (', p.total_survivor_kills, ')') survivor_kills,
-	concat(s.bandit_kills, ' (', p.total_bandit_kills, ')') bandit_kills
+	concat(s.survivor_kills, ' (', p.total_survivor_kills, ')') hkills,
+	concat(s.bandit_kills, ' (', p.total_bandit_kills, ')') bkills
 FROM
 	survivor s
 INNER JOIN
