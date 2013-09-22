@@ -14,15 +14,14 @@ package
 		static public var rIconFence:Class;
 		[Embed(source="icons/tent.png")]
 		static public var rIconTent:Class;
-		[Embed(source="icons/stashSmall.png")]
-		static public var rIconStashSmall:Class;
-		[Embed(source="icons/stashMedium.png")]
-		static public var rIconStashMedium:Class;
+		[Embed(source="icons/stash.png")]
+		static public var rIconStash:Class;
 		[Embed(source="icons/trap.png")]
 		static public var rIconTrap:Class;
 		[Embed(source="icons/player.png")]
 		static public var rIconPlayer:Class;
-		
+		[Embed(source="icons/camoNet.png")]
+		static public var rIconCamoNet:Class;
 	}
 
 }
