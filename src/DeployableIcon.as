@@ -100,7 +100,7 @@ package
 					else 
 						c = 0x404040;
 				break;
-				case "TrapBear":
+				case "BearTrap_DZ":
 					if (Main.instance.icons)
 						_icon.addChild(new Assets.rIconTrap);
 					else 
