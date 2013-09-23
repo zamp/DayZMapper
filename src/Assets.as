@@ -22,6 +22,8 @@ package
 		static public var rIconPlayer:Class;
 		[Embed(source="icons/camoNet.png")]
 		static public var rIconCamoNet:Class;
+		[Embed(source="icons/beartrap.png")]
+		static public var rIconBearTrap:Class;
 	}
 
 }
