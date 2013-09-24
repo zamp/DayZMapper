@@ -100,51 +100,51 @@ package
 					else 
 						c = 0x404040;
 				break;
-				case "TrapBear":
+				case "BearTrap_DZ":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "Trap_Cans":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapTripwireFlare":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapBearTrapSmoke":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapTripwireGrenade":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapBearTrapSmoke":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapTripwireSmoke":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
 				case "TrapBearTrapFlare":
 					if (Main.instance.icons)
-						_icon.addChild(new Assets.rIconTrap);
+						_icon.addChild(new Assets.rIconBearTrap);
 					else 
 						c = 0x404040;
 				break;
