@@ -61,6 +61,8 @@ package
 			"PK",
 			"SVD",
 			"SVD_CAMO",
+			"SVD_DZ",
+			"SVD_CAMO_DZ",
 			"Launcher",
 			"PipeBomb",
 			"SmokeLauncher",
